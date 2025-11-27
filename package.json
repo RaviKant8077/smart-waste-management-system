@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "chart.js": "^4.5.1",
+    "leaflet": "^1.9.4",
+    "react-chartjs-2": "^5.3.1",
+    "react-leaflet": "^5.0.0",
+    "workbox-webpack-plugin": "^7.3.0"
+  }
+}
