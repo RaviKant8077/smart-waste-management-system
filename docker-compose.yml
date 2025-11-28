@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  # Database
+  mysql:
+    image: mysql:8.0
+    container_name: smart-waste-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: smart_waste_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 1234
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./smart-waste-management/src/main/resources/data.sql:/docker-entrypoint-initdb.d/data.sql
+    networks:
+      - smart-waste-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Backend API
+  backend:
+    build:
+      context: ./smart-waste-management
+      dockerfile: Dockerfile
+    container_name: smart-waste-backend
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/smart_waste_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8082:8082"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - smart-waste-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Frontend
+  frontend:
+    build:
+      context: ./Frontend/smart-waste-management-system
+      dockerfile: Dockerfile
+    container_name: smart-waste-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - smart-waste-network
+
+volumes:
+  mysql_data:
+
+networks:
+  smart-waste-network:
+    driver: bridge
