@@ -1,0 +1,3 @@
+- [x] Add spring-boot-starter-actuator dependency to pom.xml
+- [x] Add actuator configuration to application.properties
+- [ ] Restart the application and test the endpoint

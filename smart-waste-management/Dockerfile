@@ -34,11 +34,11 @@ RUN groupadd --system spring && useradd --system -g spring spring
 USER spring
 
 # Expose port
-EXPOSE 8080
+EXPOSE 8082
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:8080/actuator/health || exit 1
+# Health check (improved)
+HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=5 \
+  CMD curl -f http://localhost:8082/actuator/health || exit 1
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]

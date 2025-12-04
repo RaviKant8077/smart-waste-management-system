@@ -27,8 +27,8 @@ public class PageAccessFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String path = request.getRequestURI();
 
-        // always allow auth and websocket endpoints
-        if (path.startsWith("/api/auth") || path.startsWith("/ws") || path.startsWith("/public") || path.startsWith("/static") || path.startsWith("/uploads")) {
+        // always allow auth, websocket, actuator, and root endpoints
+        if (path.equals("/") || path.startsWith("/api/auth") || path.startsWith("/ws") || path.startsWith("/public") || path.startsWith("/static") || path.startsWith("/uploads") || path.startsWith("/actuator")) {
             filterChain.doFilter(request, response);
             return;
         }
