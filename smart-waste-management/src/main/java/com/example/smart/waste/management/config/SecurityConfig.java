@@ -29,6 +29,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
+                .antMatchers("/").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/ws/**").permitAll()
                 .antMatchers("/api/dashboard/**").authenticated()
@@ -36,6 +37,7 @@ public class SecurityConfig {
                 .antMatchers("/api/supervisor/**").hasRole("SUPERVISOR")
                 .antMatchers("/api/employee/**").hasRole("EMPLOYEE")
                 .antMatchers("/api/citizen/**").hasRole("CITIZEN")
+                .antMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
@@ -50,9 +52,14 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://smart-waste-app-production.up.railway.app")); // Replace with actual frontend domain for production
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList(
+                "Authorization",
+                "Content-Type",
+                "X-Requested-With"
+        ));
+
         configuration.setAllowCredentials(true);
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
 
