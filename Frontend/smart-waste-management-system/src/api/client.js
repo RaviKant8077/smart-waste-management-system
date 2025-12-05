@@ -1,7 +1,6 @@
 import axios from 'axios'
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8082' 
-//'https://smart-waste-app-production.up.railway.app'
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://smart-waste-app-production.up.railway.app'
 
 // 'http://localhost:8082'
 // 
