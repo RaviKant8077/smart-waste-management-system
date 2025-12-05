@@ -52,7 +52,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173","https://dancing-profiterole-7fbc07.netlify.app/", "https://smart-waste-app-production.up.railway.app")); // Replace with actual frontend domain for production
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173","https://dancing-profiterole-7fbc07.netlify.app", "https://smart-waste-app-production.up.railway.app")); // Replace with actual frontend domain for production
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList(
                 "Authorization",
