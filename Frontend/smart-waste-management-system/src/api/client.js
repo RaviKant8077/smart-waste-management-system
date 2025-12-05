@@ -1,9 +1,10 @@
 import axios from 'axios'
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://smart-waste-app-production.up.railway.app'
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8082' 
+
 // 'http://localhost:8082'
 // 
-//  || 
+//  || 'https://smart-waste-app-production.up.railway.app'  || 
 const client = axios.create({
   baseURL: API_BASE,
   withCredentials: true, // expect backend to set HTTP-only cookies for auth when applicable
