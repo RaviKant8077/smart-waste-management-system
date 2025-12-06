@@ -3,29 +3,32 @@ name: React CI/CD with Vercel
 on:
   push:
     branches:
-      - main   # Deploy on every push to main
+      - main
   pull_request:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 18
 
-      - name: Install dependencies
+      - name: Install Frontend Dependencies
+        working-directory: ./Frontend/smart-waste-management-system
         run: npm install
 
-      - name: Build React App
+      - name: Build Frontend
+        working-directory: ./Frontend/smart-waste-management-system
         run: npm run build
 
       - name: Deploy to Vercel
+        working-directory: ./Frontend/smart-waste-management-system
         run: |
           npm install -g vercel
           vercel --prod --yes \
